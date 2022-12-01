@@ -6,6 +6,7 @@ sc.bgcolor("black")
 scwidth, scheight = 1000, 600
 sc.setup(scwidth,scheight)
 
+
 padA = Paddle(-450,0) #leva
 padB = Paddle(450,0) #prava
 ball = Ball()
