@@ -38,7 +38,7 @@ class Ball():
         self.x = self.x_or = x
         self.y = self.y_or = y
         self.radius = radius
-        self.ball_mvelocity = 5
+        self.ball_mvelocity = 4
         self.ball_color = (255,255,255)
         self.dx = self.ball_mvelocity
         self.dy = 0
@@ -60,7 +60,7 @@ class Ball():
 class Score():
     def __init__(self):
         self.font = pg.font.SysFont("comicsans", 50)
-        self.winning_score = 2
+        self.winning_score = 10
         self.left_score = 0
         self.right_score = 0
 
