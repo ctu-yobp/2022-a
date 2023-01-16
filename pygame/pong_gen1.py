@@ -38,7 +38,7 @@ class Ball():
         self.x = self.x_or = x
         self.y = self.y_or = y
         self.radius = radius
-        self.ball_mvelocity = 4
+        self.ball_mvelocity = 5
         self.ball_color = (255,255,255)
         self.dx = self.ball_mvelocity
         self.dy = 0
@@ -64,13 +64,6 @@ class Score():
         self.left_score = 0
         self.right_score = 0
 
-    # def score_counter(self):
-    #     if Pong().ball.x < 0:
-    #         Pong().score.right_score += 1
-    #         Pong().ball.reset()
-    #     elif Pong().ball.x > Pong().screen_width:
-    #         Pong().score.left_score += 1
-    #         Pong().ball.reset()
         
 class Pong():
     def __init__(self):
@@ -110,29 +103,33 @@ class Pong():
         rf = (paddle.pad_height / 2) / ball.ball_mvelocity
         ball.dy = -1 * delta_y / rf
 
-    def collision(self, ball, left_paddle, right_paddle):
+    def collision_edge(self, ball):
         if ball.y + ball.radius >= self.screen_height:
             ball.dy *= -1
         elif ball.y - ball.radius <= 0:
             ball.dy *= -1
 
+    def collision_rpaddle(self, ball, right_paddle):
+        if ball.dx > 0:    
+            if ball.y >= right_paddle.y and ball.y <= right_paddle.y + right_paddle.pad_height:
+                if ball.x + ball.radius >= right_paddle.x :
+                    ball.dx *= -1
+                    self.bounce_angle(ball, right_paddle)
+
+    def collision_lpaddle(self, ball, left_paddle):
         if ball.dx < 0:
             if ball.y >= left_paddle.y and ball.y <= left_paddle.y + left_paddle.pad_height:
                 if ball.x - ball.radius <= left_paddle.x + left_paddle.pad_width:
                     ball.dx *= -1
-
                     self.bounce_angle(ball, left_paddle)
+       
 
-        else:
-            if ball.y >= right_paddle.y and ball.y <= right_paddle.y + right_paddle.pad_height:
-                if ball.x + ball.radius >= right_paddle.x :
-                    ball.dx *= -1
+    def collision(self, ball, left_paddle, right_paddle):
+        self.collision_edge(ball)
+        self.collision_lpaddle(ball, left_paddle)
+        self.collision_rpaddle(ball, right_paddle)
 
-                    self.bounce_angle(ball, right_paddle)
 
-   # ###########################
-   # predelat do tridy Score ???
-   # ########################### 
     def score_counter(self):
         if self.ball.x < 0:
             self.score.right_score += 1
@@ -156,9 +153,7 @@ class Pong():
             pg.display.update()
             pg.time.delay(5000)
             pg.quit()
-   # ###########################
-   # predelat do tridy Score ???
-   # ###########################
+
 
     def run_game(self):
         pg.display.set_caption("Pong")
